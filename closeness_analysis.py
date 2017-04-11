@@ -51,6 +51,21 @@ def draw_histogram(closeness, name, filename_core):
 
     print "Saved plots for {}".format(name)
 
+
+def centrality(closeness):
+    sorted_indexes = np.argsort(closeness)[::-1]
+    highest = sorted_indexes[:10]
+    highest_values = [closeness[i] for i in sorted_indexes[:10]]
+    lowest = sorted_indexes[-10:]
+    lowest_value = closeness[sorted_indexes[-1]]
+    lowest_values = [closeness[i] for i in sorted_indexes[-10:]]
+
+    print "Highest centrality values: {}".format(highest_values)
+    print "Highest centrality indexes: {}".format(highest)
+    print "Lowest centrality values: {}".format(lowest_values)
+    print "Lowest centrality indexes: {}".format(lowest)
+    print "Number of lowest: {}".format(np.where(closeness == lowest_value)[0].size)
+
 if __name__ == '__main__':
 
     ARGPARSER = argparse.ArgumentParser()
@@ -75,5 +90,7 @@ if __name__ == '__main__':
         basic_statistics(closeness, "Closeness")
         print "-------------"
         draw_histogram(closeness, "closeness", filename_core)
+        print "-------------"
+        centrality(closeness)
         print "-------------"
         print "DONE!"

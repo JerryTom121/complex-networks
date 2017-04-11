@@ -60,6 +60,20 @@ def draw_distribution(degrees, sid, filename_core):
 
     print "Saved plots for {} degrees".format(sid)
 
+
+def centrality(degrees, sid):
+    sorted_indexes = np.argsort(degrees)[::-1]
+    highest = sorted_indexes[:10]
+    highest_values = [degrees[i] for i in sorted_indexes[:10]]
+    lowest = sorted_indexes[-10:]
+    lowest_values = [degrees[i] for i in sorted_indexes[-10:]]
+
+    print "Highest {} centrality values: {}".format(sid, highest_values)
+    print "Highest {} centrality indexes: {}".format(sid, highest)
+    print "Lowest {} centrality values: {}".format(sid, lowest_values)
+    print "Lowest {} centrality indexes: {}".format(sid, lowest)
+    print "Number of zeroes: {}".format(np.where(degrees == 0)[0].size)
+
 if __name__ == '__main__':
 
     ARGPARSER = argparse.ArgumentParser()
@@ -79,5 +93,9 @@ if __name__ == '__main__':
     print "----------"
     draw_distribution(deg_in, "in", filename_core)
     draw_distribution(deg_out, "out", filename_core)
+    print "----------"
+    centrality(deg_in, "in")
+    print "----------"
+    centrality(deg_out, "out")
     print "----------"
     print "DONE!"

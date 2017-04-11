@@ -14,7 +14,7 @@ def load(filename):
 
 def compute_and_save_betweenness(g, filename):
     vb, eb = gt.betweenness(g)
-    g.vertex_properties["Betweenness"] = vb
+    g.vertex_properties["betweenness"] = vb
     g.save(filename)
 
 
@@ -51,6 +51,21 @@ def draw_histogram(betweenness, name, filename_core):
 
     print "Saved plots for {}".format(name)
 
+
+def centrality(betweenness):
+    sorted_indexes = np.argsort(betweenness)[::-1]
+    highest = sorted_indexes[:10]
+    highest_values = [betweenness[i] for i in sorted_indexes[:10]]
+    lowest = sorted_indexes[-10:]
+    lowest_value = betweenness[sorted_indexes[-1]]
+    lowest_values = [betweenness[i] for i in sorted_indexes[-10:]]
+
+    print "Highest centrality values: {}".format(highest_values)
+    print "Highest centrality indexes: {}".format(highest)
+    print "Lowest centrality values: {}".format(lowest_values)
+    print "Lowest centrality indexes: {}".format(lowest)
+    print "Number of lowerst: {}".format(np.where(betweenness == lowest_value)[0].size)
+
 if __name__ == '__main__':
 
     ARGPARSER = argparse.ArgumentParser()
@@ -74,5 +89,7 @@ if __name__ == '__main__':
         basic_statistics(betweenness, "Betweenness")
         print "-------------"
         draw_histogram(betweenness, "betweenness", filename_core)
+        print "-------------"
+        centrality(betweenness)
         print "-------------"
         print "DONE!"
